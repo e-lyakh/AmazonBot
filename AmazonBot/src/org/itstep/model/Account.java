@@ -1,50 +1,43 @@
 package org.itstep.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 
  * @author Evgeniy Lyakh
  *
  */
+
+@Setter
+@Getter
+@Entity
+@Table (name = "accounts")
 public class Account {	
 	
-	private String firtstName;
-	private String lastName;
+	@Id
+	@Column (name = "email", length = 100)
 	private String email;
-	private String password;	
 	
-	public String getFirtstName() {
-		return firtstName;
-	}
-	public void setFirstName(String firtstName) {
-		this.firtstName = firtstName;
-	}
+	@Column (name = "password", length = 50, nullable = false)
+	private String password;
 	
-	public String getLastName() {
-		return lastName;
-	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+	@Column (name = "first_name", length = 100, nullable = false)
+	private String firtstName;
 	
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
+	@Column (name = "last_name", length = 100, nullable = false)
+	private String lastName;
 	
 	public Account() { }
-	public Account(String firtstName, String lastName, String email, String password) {		
-		this.firtstName = firtstName;
-		this.lastName = lastName;
+	public Account(String email, String password, String firtstName, String lastName) {		
 		this.email = email;
 		this.password = password;
+		this.firtstName = firtstName;
+		this.lastName = lastName;
 	}
 }
