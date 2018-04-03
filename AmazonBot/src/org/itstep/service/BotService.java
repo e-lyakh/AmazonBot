@@ -10,11 +10,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-/**
- * 
- * @author Evgeniy Lyakh
- *
- */
 public class BotService {
 	
 	private static final String BASE_URL = "https://www.amazon.com";	
@@ -51,10 +46,10 @@ public class BotService {
 		String registerlink = registerLinkElement.getAttribute("href");
 		
 		driver.get(registerlink);
-		Timer.waitSec(5);
+		Timer.waitSec(5);		
 		
 		WebElement inputNameElement = driver.findElement(By.id("ap_customer_name"));
-		inputNameElement.sendKeys(account.getFirtstName() + " " + account.getLastName());
+		inputNameElement.sendKeys(account.getFirstName() + " " + account.getLastName());
 		Timer.waitSec(5);
 		
 		WebElement inputEmailElement = driver.findElement(By.id("ap_email"));

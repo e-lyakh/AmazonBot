@@ -6,11 +6,14 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.itstep.model.Account;
 import org.itstep.model.Good;
+import org.itstep.model.GoodAction;
+import org.itstep.dao.AccountDAO;
+import org.itstep.dao.GoodDAO;
+import org.itstep.dao.GoodActionDAO;
 import org.itstep.service.BotService;
 import org.openqa.selenium.WebDriver;
 
@@ -27,8 +30,10 @@ import java.awt.SystemColor;
 public class MainWindow extends JFrame{	
 	
 	private WebDriver driver;
+	
 	private Account account;
 	private Good good;
+	private GoodAction goodAction;	
 	
 	private JLabel lblFirsName;
 	private JTextField firstName;
@@ -48,9 +53,14 @@ public class MainWindow extends JFrame{
 
 	public MainWindow(String title) {
 		
-		account = new Account("Albert", "Einstein", "albert.einstein@gmail.com", "e=m*c*c");
-		good = new Good();
+		account = new Account("no_FirstName", "no_LastName", "no@mail.com", "no_password");
+		AccountDAO.save(account);
+		good = new Good("no_asin", "no_GoodName", "no_ShopURL");
+		GoodDAO.save(good);
+		goodAction = new GoodAction(System.currentTimeMillis(), "input initial info", Boolean.FALSE, account, good);		
+		GoodActionDAO.save(goodAction);			
 		
+		// Window params
 		setTitle(title);
 		setSize(400, 400);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -145,7 +155,9 @@ public class MainWindow extends JFrame{
 			public void changedUpdate(DocumentEvent e) {				
 				account.setPassword(password.getText());
 			}
-		});		
+		});
+		
+		AccountDAO.save(account);
 		
 		// ASIN:
 		lblAsin = new JLabel("ASIN:");
@@ -157,6 +169,7 @@ public class MainWindow extends JFrame{
 		asin.setBounds(105, 210, 250, 20);
 		getContentPane().add(asin);
 		asin.setColumns(10);
+		asin.setText("0545703301");
 		asin.getDocument().addDocumentListener(new DocumentListener() {			
 			public void removeUpdate(DocumentEvent e) {
 				good.setAsin(asin.getText());				
@@ -168,7 +181,11 @@ public class MainWindow extends JFrame{
 				good.setAsin(asin.getText());
 			}
 		});
-		asin.setText("0545703301");
+		
+		GoodDAO.save(good);
+		
+		goodAction.setAction("initial info entered");
+		GoodActionDAO.save(goodAction);		
 
 		// Run button
 		btnAddToCart = new JButton("RUN BOT");
@@ -215,7 +232,7 @@ public class MainWindow extends JFrame{
 		
 		statusField.setText("Bot is running...");
 		//getContentPane().revalidate();
-		getContentPane().repaint();
+		getContentPane().repaint();		
 		
 		//JOptionPane.showMessageDialog(this, "test to renew text");
 		
@@ -225,15 +242,22 @@ public class MainWindow extends JFrame{
 		if(driver != null) {
 			statusField.setText("Bot has successfully registered an account");
 			getContentPane().repaint();
+			updateGoodAction("account is registered");			
 			
 			driver = BotService.addGoodToCart(driver, good);
-			if(driver != null)
+			if(driver != null) {
 				statusField.setText("Bot has successfully added a good to the cart");
-			else
-				statusField.setText("Something has come wrong with adding to the cart");			
+				updateGoodAction("good is added to cart");				
+			}
+				
+			else {
+				statusField.setText("Something has come wrong with adding to the cart");
+				updateGoodAction("good is not added to cart");
+			}							
 			driver.quit();
 		} else {
 			statusField.setText("Something has come wrong with registration");
+			updateGoodAction("account is not registered");		
 		}
 		
 		firstName.setText("");
@@ -242,5 +266,11 @@ public class MainWindow extends JFrame{
 		password.setText("");
 		asin.setText("");
 		getContentPane().repaint();
+	}
+	
+	private void updateGoodAction(String action) {
+		goodAction.setAction(action);
+		goodAction.setActionTime(System.currentTimeMillis());
+		GoodActionDAO.save(goodAction);
 	}
 }

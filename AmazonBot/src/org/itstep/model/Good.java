@@ -8,12 +8,6 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * 
- * @author Evgeniy Lyakh
- *
- */
-
 @Setter
 @Getter
 @Entity
