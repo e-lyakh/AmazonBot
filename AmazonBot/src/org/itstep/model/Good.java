@@ -29,9 +29,6 @@ public class Good {
 		this.asin = asin;
 		this.name = name;
 		this.shopUrl = shopUrl;		
-	}
-	
-//	public String ToString() {
-//		return "Good: " + this.name + ", ASIN: '" + this.asin + ", url: " + this.shopUrl;
-//	}
+	}	
+
 }

@@ -57,7 +57,7 @@ public class MainWindow extends JFrame{
 		AccountDAO.save(account);
 		good = new Good("no_asin", "no_GoodName", "no_ShopURL");
 		GoodDAO.save(good);
-		goodAction = new GoodAction(System.currentTimeMillis(), "input initial info", Boolean.FALSE, account, good);		
+		goodAction = new GoodAction(System.currentTimeMillis(), "input initial info", false, account, good);		
 		GoodActionDAO.save(goodAction);			
 		
 		// Window params
@@ -155,9 +155,7 @@ public class MainWindow extends JFrame{
 			public void changedUpdate(DocumentEvent e) {				
 				account.setPassword(password.getText());
 			}
-		});
-		
-		AccountDAO.save(account);
+		});		
 		
 		// ASIN:
 		lblAsin = new JLabel("ASIN:");
@@ -180,19 +178,20 @@ public class MainWindow extends JFrame{
 			public void changedUpdate(DocumentEvent e) {				
 				good.setAsin(asin.getText());
 			}
-		});
-		
-		GoodDAO.save(good);
-		
-		goodAction.setAction("initial info entered");
-		GoodActionDAO.save(goodAction);		
+		});		
+				
 
 		// Run button
 		btnAddToCart = new JButton("RUN BOT");
 		btnAddToCart.setBounds(14, 258, 355, 30);
 		btnAddToCart.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {				
-				runBot(account, good);
+			public void actionPerformed(ActionEvent e) {
+				AccountDAO.save(account);
+				GoodDAO.save(good);				
+				goodAction.setAction("initial info entered");
+				GoodActionDAO.save(goodAction);				
+				
+				runBot(account, good);				
 			}
 		});
 		getContentPane().add(btnAddToCart);
@@ -244,7 +243,7 @@ public class MainWindow extends JFrame{
 			getContentPane().repaint();
 			updateGoodAction("account is registered");			
 			
-			driver = BotService.addGoodToCart(driver, good);
+			driver = BotService.addGoodToCart(driver, good, goodAction);
 			if(driver != null) {
 				statusField.setText("Bot has successfully added a good to the cart");
 				updateGoodAction("good is added to cart");				
