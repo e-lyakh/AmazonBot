@@ -2,6 +2,7 @@ package org.itstep.util;
 
 import java.io.File;
 
+import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.itstep.model.Account;
@@ -12,7 +13,7 @@ public class HiberUtil {
 	
 	private static SessionFactory sessionFactory = createSessionFactory();
 
-	private static SessionFactory createSessionFactory() {		
+	private static SessionFactory createSessionFactory() throws HibernateException {		
 		
 		Configuration configuration = new Configuration(); // for hibernate.properties
 		

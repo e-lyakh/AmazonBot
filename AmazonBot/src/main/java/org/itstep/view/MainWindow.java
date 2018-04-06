@@ -29,9 +29,11 @@ import java.awt.SystemColor;
 
 public class MainWindow extends JFrame{	
 	
-	private WebDriver driver;
+private WebDriver driver;
+	
 	private Account account;
 	private Good good;
+	private GoodAction goodAction;	
 	
 	private JLabel lblFirsName;
 	private JTextField firstName;
@@ -51,8 +53,12 @@ public class MainWindow extends JFrame{
 
 	public MainWindow(String title) {
 		
-		account = new Account("Albert", "Einstein", "albert.einstein@gmail.com", "e=m*c*c");
-		good = new Good();
+		account = new Account("no_FirstName", "no_LastName", "no@mail.com", "no_password");
+		AccountDAO.save(account);
+		good = new Good("no_asin", "no_GoodName", "no_ShopURL");
+		GoodDAO.save(good);
+		goodAction = new GoodAction(System.currentTimeMillis(), "input initial info", false, account, good);		
+		GoodActionDAO.save(goodAction);
 		
 		setTitle(title);
 		setSize(400, 400);
