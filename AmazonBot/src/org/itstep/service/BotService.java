@@ -2,16 +2,14 @@ package org.itstep.service;
 
 import java.util.concurrent.TimeUnit;
 
-import org.itstep.dao.GoodActionDAO;
-import org.itstep.dao.GoodDAO;
 import org.itstep.model.Account;
 import org.itstep.model.Good;
-import org.itstep.model.GoodAction;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+
 
 public class BotService {
 	
@@ -30,7 +28,7 @@ public class BotService {
 		
 		options.addArguments("--start-maximized");
 		
-		WebDriver driver = new ChromeDriver();
+		WebDriver driver = new ChromeDriver(options);
 		driver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
 		driver.manage().timeouts().setScriptTimeout(60, TimeUnit.SECONDS);
 		
@@ -49,7 +47,7 @@ public class BotService {
 		String registerlink = registerLinkElement.getAttribute("href");
 		
 		driver.get(registerlink);
-		Timer.waitSec(5);		
+		Timer.waitSec(5);
 		
 		WebElement inputNameElement = driver.findElement(By.id("ap_customer_name"));
 		inputNameElement.sendKeys(account.getFirstName() + " " + account.getLastName());
@@ -81,7 +79,7 @@ public class BotService {
 		return null;
 	}
 	
-	public static WebDriver addGoodToCart(WebDriver driver, Good good, GoodAction goodAction) {		
+	public static WebDriver addGoodToCart(WebDriver driver, Good good) {		
 		
 		Timer.waitSec(5);
 		
@@ -100,11 +98,6 @@ public class BotService {
 		
 		good.setShopUrl(goodUrl);
 		good.setName(goodName);
-		GoodDAO.save(good);
-		
-		goodAction.setAction("good name and url is received");
-		goodAction.setActionTime(System.currentTimeMillis());
-		GoodActionDAO.save(goodAction);
 		
 		driver.get(goodUrl);
 		Timer.waitSec(5);
@@ -115,17 +108,9 @@ public class BotService {
 		
 		String addCheckXPath = "//h1[@class='a-size-medium a-text-bold']";
 		WebElement addedToCartCheck = driver.findElement(By.xpath(addCheckXPath));		
-		if(addedToCartCheck.getText().equals("Added to Cart")) {
-			goodAction.setAction("good is added to cart");
-			goodAction.setActionTime(System.currentTimeMillis());
-			goodAction.setIsAddedToCart(true);
-			GoodActionDAO.save(goodAction);
+		if(addedToCartCheck.getText().equals("Added to Cart"))
 			return driver;
-		}
-			
-		goodAction.setAction("good is not added to cart");
-		goodAction.setActionTime(System.currentTimeMillis());		
-		GoodActionDAO.save(goodAction);
+		
 		return null;
 	}
 }

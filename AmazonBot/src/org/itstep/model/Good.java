@@ -29,6 +29,6 @@ public class Good {
 		this.asin = asin;
 		this.name = name;
 		this.shopUrl = shopUrl;		
-	}	
+	}
 
 }
