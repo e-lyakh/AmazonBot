@@ -6,11 +6,14 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.itstep.model.Account;
 import org.itstep.model.Good;
+import org.itstep.model.GoodAction;
+import org.itstep.dao.AccountDAO;
+import org.itstep.dao.GoodDAO;
+import org.itstep.dao.GoodActionDAO;
 import org.itstep.service.BotService;
 import org.openqa.selenium.WebDriver;
 
@@ -226,7 +229,7 @@ public class MainWindow extends JFrame{
 			statusField.setText("Bot has successfully registered an account");
 			getContentPane().repaint();
 			
-			driver = BotService.addGoodToCart(driver, good);
+			//driver = BotService.addGoodToCart(driver, good);
 			if(driver != null)
 				statusField.setText("Bot has successfully added a good to the cart");
 			else
