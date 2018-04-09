@@ -56,7 +56,7 @@ public class MainWindow extends JFrame{
 
 	public MainWindow(String title) {
 		
-		account = new Account("no_FirstName", "no_LastName", "no@mail.com", "no_password");
+		account = new Account("no@mail.com", "no_password", "no_FirstName", "no_LastName");
 		accountDAO = new AccountDAO();
 		accountDAO.save(account);
 		good = new Good("no_asin", "no_GoodName", "no_ShopURL");
@@ -174,6 +174,7 @@ public class MainWindow extends JFrame{
 		getContentPane().add(asin);
 		asin.setColumns(10);
 		asin.setText("0545703301");
+		good.setAsin("0545703301");
 		asin.getDocument().addDocumentListener(new DocumentListener() {			
 			public void removeUpdate(DocumentEvent e) {
 				good.setAsin(asin.getText());				

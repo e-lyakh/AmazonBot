@@ -19,14 +19,16 @@ public class HiberUtil {
 
 	private SessionFactory createSessionFactory() throws HibernateException {		
 		
-		Configuration configuration = new Configuration(); // for hibernate.properties
+		// for hibernate.properties:
+		Configuration configuration = new Configuration();
 		
 		configuration.addAnnotatedClass(Account.class);
 		configuration.addAnnotatedClass(Good.class);
 		configuration.addAnnotatedClass(GoodAction.class);
 		
-		//String userDir = System.getProperty("user.dir");
-		//Configuration configuration = new Configuration().configure(new File(userDir + "/src/org/itstep/resources/hibernate.cfg.xml"));
+		// for hibernate.cfg.xml:
+//		String userDir = System.getProperty("user.dir");
+//		Configuration configuration = new Configuration().configure(new File(userDir + "/src/main/resources/hibernate.cfg.xml"));
 		
 		return configuration.buildSessionFactory();
 		

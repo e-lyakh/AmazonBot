@@ -14,7 +14,7 @@
   <properties>
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <lombok-version>1.16.20</lombok-version>
-    <jdbc-version>1.4.196</jdbc-version>
+    <jdbc-version>1.4.197</jdbc-version>
     <hibernate-version>5.2.13.Final</hibernate-version>
     <junit-version>4.12</junit-version>     
     <maven.compiler.source>1.6</maven.compiler.source>
@@ -36,7 +36,6 @@
     	<groupId>com.h2database</groupId>
     	<artifactId>h2</artifactId>
     	<version>${jdbc-version}</version>
-    	<scope>test</scope>
 	</dependency>
 	
 	<!-- HIBERNATE -->

@@ -7,6 +7,7 @@ import org.itstep.util.HiberUtil;
 public class GoodDAO {
 	
 	private HiberUtil hUtil;
+	private Session session;
 	
 	public GoodDAO() {
 		hUtil = new HiberUtil();
@@ -14,7 +15,7 @@ public class GoodDAO {
 	
 	public void save(Good good) {
 		
-		Session session = hUtil.getSessionFactory().openSession();		
+		session = hUtil.getSessionFactory().openSession();		
 		session.getTransaction().begin();		
 		session.saveOrUpdate(good);		
 		session.getTransaction().commit();		
@@ -23,7 +24,7 @@ public class GoodDAO {
 	
 	public Good get(String asin) {
 		
-		Session session = hUtil.getSessionFactory().openSession();		
+		session = hUtil.getSessionFactory().openSession();		
 		session.getTransaction().begin();		
 		Good good = session.get(Good.class, asin);		
 		session.getTransaction().commit();		
@@ -33,7 +34,7 @@ public class GoodDAO {
 	
 	public void delete(Good good) {
 		
-		Session session = hUtil.getSessionFactory().openSession();		
+		session = hUtil.getSessionFactory().openSession();		
 		session.getTransaction().begin();		
 		session.delete(good);		
 		session.getTransaction().commit();		
