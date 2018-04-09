@@ -100,11 +100,13 @@ public class BotService {
 		
 		good.setShopUrl(goodUrl);
 		good.setName(goodName);
-		GoodDAO.save(good);
+		GoodDAO goodDAO = new GoodDAO();
+		goodDAO.save(good);
 		
 		goodAction.setAction("good name and url is received");
 		goodAction.setActionTime(System.currentTimeMillis());
-		GoodActionDAO.save(goodAction);
+		GoodActionDAO goodActionDAO = new GoodActionDAO();
+		goodActionDAO.save(goodAction);
 		
 		driver.get(goodUrl);
 		Timer.waitSec(5);
@@ -119,13 +121,13 @@ public class BotService {
 			goodAction.setAction("good is added to cart");
 			goodAction.setActionTime(System.currentTimeMillis());
 			goodAction.setIsAddedToCart(true);
-			GoodActionDAO.save(goodAction);
+			goodActionDAO.save(goodAction);
 			return driver;
 		}
 			
 		goodAction.setAction("good is not added to cart");
 		goodAction.setActionTime(System.currentTimeMillis());		
-		GoodActionDAO.save(goodAction);
+		goodActionDAO.save(goodAction);
 		return null;
 	}
 }

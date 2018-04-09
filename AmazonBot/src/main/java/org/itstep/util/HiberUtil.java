@@ -11,9 +11,13 @@ import org.itstep.model.GoodAction;
 
 public class HiberUtil {
 	
-	private static SessionFactory sessionFactory = createSessionFactory();
+	private SessionFactory sessionFactory;
+	
+	public HiberUtil() throws HibernateException {
+		sessionFactory = createSessionFactory();
+	}
 
-	private static SessionFactory createSessionFactory() throws HibernateException {		
+	private SessionFactory createSessionFactory() throws HibernateException {		
 		
 		Configuration configuration = new Configuration(); // for hibernate.properties
 		
@@ -28,7 +32,7 @@ public class HiberUtil {
 		
 	}
 	
-	public static SessionFactory getSessionFactory() {
+	public SessionFactory getSessionFactory() {
 		return sessionFactory;
 	}
 }

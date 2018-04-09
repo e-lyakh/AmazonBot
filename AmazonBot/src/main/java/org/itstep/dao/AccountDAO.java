@@ -6,18 +6,24 @@ import org.itstep.util.HiberUtil;
 
 public class AccountDAO {
 	
-	public static void save(Account account) {
+	private HiberUtil hUtil;
+	
+	public AccountDAO() {
+		hUtil = new HiberUtil();
+	}
+	
+	public void save(Account account) {		
 		
-		Session session = HiberUtil.getSessionFactory().openSession();		
+		Session session = hUtil.getSessionFactory().openSession();
 		session.getTransaction().begin();		
 		session.saveOrUpdate(account);		
 		session.getTransaction().commit();		
 		session.close();
 	};
 	
-	public static Account get(String email) {
+	public Account get(String email) {		
 		
-		Session session = HiberUtil.getSessionFactory().openSession();		
+		Session session = hUtil.getSessionFactory().openSession();	
 		session.getTransaction().begin();		
 		Account account = session.get(Account.class, email);		
 		session.getTransaction().commit();		
@@ -25,9 +31,9 @@ public class AccountDAO {
 		return account;
 	};
 	
-	public static void delete(Account account) {
+	public void delete(Account account) {		
 		
-		Session session = HiberUtil.getSessionFactory().openSession();		
+		Session session = hUtil.getSessionFactory().openSession();	
 		session.getTransaction().begin();		
 		session.delete(account);
 		session.getTransaction().commit();		

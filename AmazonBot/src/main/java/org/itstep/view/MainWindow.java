@@ -8,12 +8,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import org.itstep.dao.AccountDAO;
+import org.itstep.dao.GoodActionDAO;
+import org.itstep.dao.GoodDAO;
 import org.itstep.model.Account;
 import org.itstep.model.Good;
 import org.itstep.model.GoodAction;
-import org.itstep.dao.AccountDAO;
-import org.itstep.dao.GoodDAO;
-import org.itstep.dao.GoodActionDAO;
 import org.itstep.service.BotService;
 import org.openqa.selenium.WebDriver;
 
@@ -27,13 +27,16 @@ import javax.swing.event.DocumentListener;
 import java.awt.Font;
 import java.awt.SystemColor;
 
-public class MainWindow extends JFrame{	
+public class MainWindow extends JFrame{
 	
-private WebDriver driver;
+	private WebDriver driver;
 	
 	private Account account;
 	private Good good;
-	private GoodAction goodAction;	
+	private GoodAction goodAction;
+	private AccountDAO accountDAO;
+	private GoodDAO goodDAO;
+	private GoodActionDAO goodActionDAO;
 	
 	private JLabel lblFirsName;
 	private JTextField firstName;
@@ -54,12 +57,16 @@ private WebDriver driver;
 	public MainWindow(String title) {
 		
 		account = new Account("no_FirstName", "no_LastName", "no@mail.com", "no_password");
-		AccountDAO.save(account);
+		accountDAO = new AccountDAO();
+		accountDAO.save(account);
 		good = new Good("no_asin", "no_GoodName", "no_ShopURL");
-		GoodDAO.save(good);
-		goodAction = new GoodAction(System.currentTimeMillis(), "input initial info", false, account, good);		
-		GoodActionDAO.save(goodAction);
+		goodDAO = new GoodDAO();
+		goodDAO.save(good);
+		goodAction = new GoodAction(System.currentTimeMillis(), "input initial info", false, account, good);
+		goodActionDAO = new GoodActionDAO();
+		goodActionDAO.save(goodAction);			
 		
+		// Window params
 		setTitle(title);
 		setSize(400, 400);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -166,6 +173,7 @@ private WebDriver driver;
 		asin.setBounds(105, 210, 250, 20);
 		getContentPane().add(asin);
 		asin.setColumns(10);
+		asin.setText("0545703301");
 		asin.getDocument().addDocumentListener(new DocumentListener() {			
 			public void removeUpdate(DocumentEvent e) {
 				good.setAsin(asin.getText());				
@@ -176,15 +184,20 @@ private WebDriver driver;
 			public void changedUpdate(DocumentEvent e) {				
 				good.setAsin(asin.getText());
 			}
-		});
-		asin.setText("0545703301");
+		});		
+				
 
 		// Run button
 		btnAddToCart = new JButton("RUN BOT");
 		btnAddToCart.setBounds(14, 258, 355, 30);
 		btnAddToCart.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {				
-				runBot(account, good);
+			public void actionPerformed(ActionEvent e) {
+				accountDAO.save(account);
+				goodDAO.save(good);				
+				goodAction.setAction("initial info entered");
+				goodActionDAO.save(goodAction);				
+				
+				runBot(account, good);				
 			}
 		});
 		getContentPane().add(btnAddToCart);
@@ -224,7 +237,7 @@ private WebDriver driver;
 		
 		statusField.setText("Bot is running...");
 		//getContentPane().revalidate();
-		getContentPane().repaint();
+		getContentPane().repaint();		
 		
 		//JOptionPane.showMessageDialog(this, "test to renew text");
 		
@@ -234,15 +247,22 @@ private WebDriver driver;
 		if(driver != null) {
 			statusField.setText("Bot has successfully registered an account");
 			getContentPane().repaint();
+			updateGoodAction("account is registered");			
 			
-			//driver = BotService.addGoodToCart(driver, good);
-			if(driver != null)
+			driver = BotService.addGoodToCart(driver, good, goodAction);
+			if(driver != null) {
 				statusField.setText("Bot has successfully added a good to the cart");
-			else
-				statusField.setText("Something has come wrong with adding to the cart");			
+				updateGoodAction("good is added to cart");				
+			}
+				
+			else {
+				statusField.setText("Something has come wrong with adding to the cart");
+				updateGoodAction("good is not added to cart");
+			}							
 			driver.quit();
 		} else {
 			statusField.setText("Something has come wrong with registration");
+			updateGoodAction("account is not registered");		
 		}
 		
 		firstName.setText("");
@@ -251,5 +271,11 @@ private WebDriver driver;
 		password.setText("");
 		asin.setText("");
 		getContentPane().repaint();
+	}
+	
+	private void updateGoodAction(String action) {
+		goodAction.setAction(action);
+		goodAction.setActionTime(System.currentTimeMillis());
+		goodActionDAO.save(goodAction);
 	}
 }
