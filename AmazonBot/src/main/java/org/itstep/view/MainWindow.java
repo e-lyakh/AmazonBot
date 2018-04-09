@@ -56,15 +56,12 @@ public class MainWindow extends JFrame{
 
 	public MainWindow(String title) {
 		
-		account = new Account(); // "no@mail.com", "no_password", "no_FirstName", "no_LastName"
-		accountDAO = new AccountDAO();
-		//accountDAO.save(account);
-		good = new Good(); // "no_asin", "no_GoodName", "no_ShopURL"
-		goodDAO = new GoodDAO();
-		//goodDAO.save(good);
+		account = new Account();
+		accountDAO = new AccountDAO();		
+		good = new Good();
+		goodDAO = new GoodDAO();		
 		goodAction = new GoodAction(System.currentTimeMillis(), "before initial input", false, account, good);
-		goodActionDAO = new GoodActionDAO();
-		//goodActionDAO.save(goodAction);			
+		goodActionDAO = new GoodActionDAO();				
 		
 		// Window params
 		setTitle(title);
@@ -236,11 +233,8 @@ public class MainWindow extends JFrame{
 	
 	private void runBot(Account account, Good good) {		
 		
-		statusField.setText("Bot is running...");
-		//getContentPane().revalidate();
+		statusField.setText("Bot is running...");		
 		getContentPane().repaint();		
-		
-		//JOptionPane.showMessageDialog(this, "test to renew text");
 		
 		driver = BotService.getChromeDriver();
 		
@@ -254,9 +248,7 @@ public class MainWindow extends JFrame{
 			if(driver != null) {
 				statusField.setText("Bot has successfully added a good to the cart");
 				updateGoodAction("good is added to cart");				
-			}
-				
-			else {
+			} else {
 				statusField.setText("Something has come wrong with adding to the cart");
 				updateGoodAction("good is not added to cart");
 			}							
