@@ -56,15 +56,15 @@ public class MainWindow extends JFrame{
 
 	public MainWindow(String title) {
 		
-		account = new Account("no@mail.com", "no_password", "no_FirstName", "no_LastName");
+		account = new Account(); // "no@mail.com", "no_password", "no_FirstName", "no_LastName"
 		accountDAO = new AccountDAO();
-		accountDAO.save(account);
-		good = new Good("no_asin", "no_GoodName", "no_ShopURL");
+		//accountDAO.save(account);
+		good = new Good(); // "no_asin", "no_GoodName", "no_ShopURL"
 		goodDAO = new GoodDAO();
-		goodDAO.save(good);
-		goodAction = new GoodAction(System.currentTimeMillis(), "input initial info", false, account, good);
+		//goodDAO.save(good);
+		goodAction = new GoodAction(System.currentTimeMillis(), "before initial input", false, account, good);
 		goodActionDAO = new GoodActionDAO();
-		goodActionDAO.save(goodAction);			
+		//goodActionDAO.save(goodAction);			
 		
 		// Window params
 		setTitle(title);
@@ -173,7 +173,7 @@ public class MainWindow extends JFrame{
 		asin.setBounds(105, 210, 250, 20);
 		getContentPane().add(asin);
 		asin.setColumns(10);
-		asin.setText("0545703301");
+		asin.setText("0545703301"); // Add some asin to the field
 		good.setAsin("0545703301");
 		asin.getDocument().addDocumentListener(new DocumentListener() {			
 			public void removeUpdate(DocumentEvent e) {

@@ -27,7 +27,12 @@ public class Account {
 	@Column (name = "last_name", length = 100, nullable = false)
 	private String lastName;
 	
-	public Account() { }
+	public Account() {
+		this.email = "init_email";
+		this.password = "init_password";
+		this.firstName = "init_first_name";
+		this.lastName = "init_last_name";
+	}
 	public Account(String email, String password, String firstName, String lastName) {		
 		this.email = email;
 		this.password = password;

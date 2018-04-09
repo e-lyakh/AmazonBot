@@ -24,7 +24,11 @@ public class Good {
 	@Column (name = "shop_url", length = 256, nullable = false)
 	private String shopUrl;	
 	
-	public Good() {	}	
+	public Good() {
+		this.asin = "init_asin";
+		this.name = "init_name";
+		this.shopUrl = "init_url";
+	}	
 	public Good(String asin, String name, String shopUrl) {
 		this.asin = asin;
 		this.name = name;
